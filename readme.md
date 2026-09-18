@@ -60,8 +60,8 @@ The system converts the user's natural-language question into a structured query
                                       │ Aging Tickets      │
                                       │ Long Resolution    │
                                       └────────────────────┘
-
-3. Technology Stack
+```
+# 3. Technology Stack
 Component	Technology
 Programming Language	Python
 LLM	Llama 3.2
@@ -73,7 +73,7 @@ UI	Streamlit
 Validation	Pydantic
 Testing	Pytest
 API Server	Uvicorn
-4. Dataset
+# 4. Dataset
 
 The system uses the provided:
 
@@ -96,7 +96,8 @@ issue_summary	Short description of the issue
 
 For unresolved tickets, resolution_time_hrs and customer_rating can be null.
 
-5. Project Structure
+# 5. Project Structure
+```
 dotmappers-ai-assessment/
 │
 ├── data/
@@ -121,8 +122,9 @@ dotmappers-ai-assessment/
 ├── requirements.txt
 ├── start.bat
 └── README.md
-6. How the System Works
-Step 1 — Load Dataset
+```
+# 6. How the System Works
+### Step 1 — Load Dataset
 
 The application loads the CSV dataset using Pandas.
 
@@ -137,7 +139,7 @@ Numeric field conversion
 Missing categorical values
 Negative numeric values
 Customer rating range
-Step 2 — Store Data in DuckDB
+### Step 2 — Store Data in DuckDB
 
 DuckDB is used as the analytical database.
 
@@ -147,8 +149,8 @@ support_tickets
 
 This allows SQL-based analytical queries to be executed efficiently.
 
-7. Natural Language Query Pipeline
-
+# 7. Natural Language Query Pipeline
+```
 The user enters a question such as:
 
 How many tickets are currently open?
@@ -178,26 +180,26 @@ FROM support_tickets
 WHERE status = 'Open';
 
 The database result is returned through the FastAPI API.
+```
+# 8. Supported Query Operations
 
-8. Supported Query Operations
+### The query engine supports the following operations:
 
-The query engine supports the following operations:
-
-COUNT
+```COUNT
 AVERAGE
 SUM
 MIN
 MAX
 LIST
 GROUP_BY
-
-Supported metrics include:
+```
+### Supported metrics include:
 
 response_time_hrs
 resolution_time_hrs
 customer_rating
 
-Supported filters include:
+### Supported filters include:
 
 category
 priority
@@ -215,7 +217,7 @@ LLM Intent
 }
 Result
 111
-10. Another Example
+# 10. Another Example
 Input
 What is the average customer rating for Technical category tickets?
 
@@ -232,13 +234,13 @@ category = Technical
 
 The query engine executes the corresponding SQL query against DuckDB and returns the result.
 
-11. Anomaly Detection
+# 11. Anomaly Detection
 
 The system provides an anomaly detection endpoint.
 
 Two types of anomalies are currently detected.
 
-11.1 Unresolved High-Priority Tickets
+## 11.1 Unresolved High-Priority Tickets
 
 The system checks for high-priority or critical tickets that remain unresolved for more than 24 hours.
 
@@ -255,7 +257,7 @@ AND
 Open/Unresolved
 AND
 older than 24 hours
-11.2 Abnormally Long Resolution Times
+## 11.2 Abnormally Long Resolution Times
 
 The system uses the Interquartile Range (IQR) method to identify unusually long resolution times.
 
@@ -267,7 +269,7 @@ Tickets above this threshold are flagged as anomalies.
 
 This allows the system to identify unusually long resolution times without requiring manually defined thresholds.
 
-12. REST API
+# 12. REST API
 
 The FastAPI backend exposes the required endpoints.
 
@@ -312,7 +314,7 @@ This endpoint returns detected anomalies including:
 
 Unresolved high-priority tickets
 Long resolution-time tickets
-13. FastAPI Documentation
+# 13. FastAPI Documentation
 
 FastAPI automatically provides interactive API documentation.
 
@@ -322,7 +324,7 @@ http://127.0.0.1:8000/docs
 
 You can use Swagger UI to test the API endpoints.
 
-14. Streamlit UI
+# 14. Streamlit UI
 
 The project includes a minimal Streamlit interface.
 
@@ -344,12 +346,12 @@ API Health
 
 The UI checks whether the FastAPI backend is available.
 
-15. LLM Integration
+# 15. LLM Integration
 
 The project uses a local LLM through Ollama.
 
-Model:
-
+### Model:
+```
 Llama 3.2
 
 The LLM is not directly responsible for executing database queries.
@@ -369,10 +371,10 @@ Query Engine
 DuckDB
       ↓
 Result
-
+```
 This separates language understanding from database execution.
 
-16. Why This Architecture?
+# 16. Why This Architecture?
 LLM
 
 Used for natural-language understanding.
@@ -397,23 +399,24 @@ Pandas
 
 Used for data loading, cleaning, type conversion, and anomaly calculations.
 
-17. Installation
-Step 1 — Clone Repository
+# 17. Installation
+### Step 1 — Clone Repository
 git clone https://github.com/naveenk-DS/dotmappers-ai-assessment.git
 cd dotmappers-ai-assessment
-Step 2 — Create Virtual Environment
+### Step 2 — Create Virtual Environment
 
-Windows:
-
+## Windows:
+```
 python -m venv .venv
-
-Activate:
-
+```
+## Activate:
+```
 .venv\Scripts\activate
 Step 3 — Install Dependencies
 pip install -r requirements.txt
-18. Install and Run Ollama
-
+```
+# 18. Install and Run Ollama
+```
 Install Ollama and make sure it is running locally.
 
 Pull the required model:
@@ -453,7 +456,8 @@ Start Streamlit
 Open another terminal:
 
 python -m streamlit run ui/streamlit_app.py
-20. Running Tests
+```
+# 20. Running Tests
 
 The project includes automated tests using Pytest.
 
@@ -471,7 +475,7 @@ Dataset loading
 LLM intent understanding
 Database query execution
 Anomaly detection
-21. Example Questions
+# 21. Example Questions
 
 The following natural-language questions can be used to test the system:
 
@@ -481,7 +485,7 @@ How many critical tickets are unresolved?
 Which agent resolved the most tickets?
 Show me all Critical tickets not resolved within 12 hours.
 Are there any anomalies in resolution times?
-22. Error Handling
+# 22. Error Handling
 
 The application includes validation and error handling for:
 
@@ -497,7 +501,7 @@ Database query failures
 
 The system returns meaningful errors instead of silently producing incorrect results.
 
-23. Limitations
+# 23. Limitations
 
 The current implementation has some limitations.
 
@@ -523,9 +527,9 @@ Time-Based Queries
 
 Time-period interpretation is limited by the currently implemented intent schema.
 
-24. Future Improvements
+# 24. Future Improvements
 
-Possible improvements include:
+## Possible improvements include:
 
 More advanced natural-language-to-SQL generation
 Better query validation
@@ -540,7 +544,7 @@ Docker-based deployment
 Production database support
 More comprehensive automated tests
 Support for additional datasets
-25. Security and Reliability Considerations
+# 25. Security and Reliability Considerations
 
 The LLM is used to generate a structured intent rather than directly executing arbitrary SQL.
 
@@ -550,7 +554,7 @@ The query engine only handles supported operations and fields.
 
 Input validation is performed before processing the dataset.
 
-26. Assessment Requirements Coverage
+# 26. Assessment Requirements Coverage
 Requirement	Implementation
 CSV ingestion	Pandas + DuckDB
 Queryable data	DuckDB
@@ -567,7 +571,7 @@ Automated tests	Pytest
 Documentation	README
 Python implementation	Yes
 Paid services	None
-27. End-to-End Flow
+# 27. End-to-End Flow
                     User
                      │
                      ▼
@@ -607,7 +611,7 @@ Paid services	None
                      │
                      ▼
                Streamlit UI
-28. Submission
+# 28. Submission
 
 GitHub Repository:
 
@@ -622,7 +626,7 @@ Streamlit UI
 Automated tests
 Requirements
 Documentation
-29. Author
+# 29. Author
 
 Naveen K
 
